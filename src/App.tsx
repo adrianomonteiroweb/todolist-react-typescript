@@ -1,26 +1,35 @@
-import {FC, ChangeEvent, useState } from 'react';
+import { FC, ChangeEvent, useState } from "react";
 
-import './App.css';
-import { ITask } from './interfaces';
+import "./App.css";
+import TodoTask from "./components/TodoTask";
+import { ITask } from "./Interfaces";
 
 const App: FC = () => {
-  const [task, setTask] = useState<string>('');
+  const [task, setTask] = useState<string>("");
   const [dealine, setDealine] = useState<number>(0);
-  const [todo, setTodo] = useState<ITask[]>([]);
+  const [todoList, setTodoList] = useState<ITask[]>([]);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    if (e.target.value === 'task') {
-      setTask(e.target.value);
+  const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    if (event.target.name === "task") {
+      setTask(event.target.value);
     } else {
-      setDealine(Number(e.target.value));
+      setDealine(Number(event.target.value));
     }
   };
 
   const addTask = (): void => {
     const newTask = { taskName: task, dealine: dealine };
-    setTodo([...todo, newTask]);
-    setTask('');
+    setTodoList([...todoList, newTask]);
+    setTask("");
     setDealine(0);
+  };
+
+  const completeTask = (taskNameToDelete: string): void => {
+    setTodoList(
+      todoList.filter((task) => {
+        return task.taskName !== taskNameToDelete;
+      })
+    );
   };
 
   return (
@@ -29,24 +38,31 @@ const App: FC = () => {
         <div className="inputContainer">
           <input
             type="text"
-            name="task"
-            value={task}
             placeholder="Task..."
-            onChange={handleChange}
+            name="task"
+            value={ task }
+            onChange={ handleChange }
           />
           <input
             type="number"
-            name="dealine"
-            value={dealine}
-            placeholder="Dealine (in days) ..."
-            onChange={handleChange}
+            placeholder="Deadline (in Days)..."
+            name="deadline"
+            value={ dealine }
+            onChange={ handleChange }
           />
         </div>
-        <button onClick={addTask}>Add Task</button>
+        <button
+          onClick={ addTask }
+        >
+          Add Task
+        </button>
       </div>
-      <div className="todoList"></div>
+      <div className="todoList">
+        {todoList
+          .map((task: ITask, key: number) => <TodoTask key={key} task={task} completeTask={completeTask} />)}
+      </div>
     </div>
   );
-}
+};
 
 export default App;

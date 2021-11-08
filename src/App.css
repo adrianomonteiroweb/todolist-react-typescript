@@ -9,12 +9,12 @@
 
 .header {
   align-items: center;
-  background-color: rgb(12, 9, 8);
+  background-color: lightseagreen;
   border-radius: 4px;
   display: flex;
   flex: 30%;
   justify-content: center;
-  width: 100%;
+  width: 40%;
 }
 
 .header .inputContainer {
