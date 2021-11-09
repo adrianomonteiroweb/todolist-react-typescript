@@ -10,10 +10,11 @@ const App: FC = () => {
   const [todoList, setTodoList] = useState<ITask[]>([]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    if (event.target.name === "task") {
-      setTask(event.target.value);
+    const { target: { name, value } } = event;
+    if (name === "task") {
+      setTask(value);
     } else {
-      setDealine(Number(event.target.value));
+      setDealine(Number(value));
     }
   };
 
@@ -26,40 +27,38 @@ const App: FC = () => {
 
   const completeTask = (taskNameToDelete: string): void => {
     setTodoList(
-      todoList.filter((task) => {
-        return task.taskName !== taskNameToDelete;
-      })
+      todoList.filter((task) => task.taskName !== taskNameToDelete)
     );
   };
 
   return (
     <div className="App">
       <div className="header">
-        <div className="inputContainer">
-          <input
-            type="text"
-            placeholder="Task..."
-            name="task"
-            value={ task }
-            onChange={ handleChange }
-          />
-          <input
-            type="number"
-            placeholder="Deadline (in Days)..."
-            name="deadline"
-            value={ dealine }
-            onChange={ handleChange }
-          />
-        </div>
-        <button
-          onClick={ addTask }
-        >
-          Add Task
-        </button>
+          <div className="inputContainer">
+            <input
+              type="text"
+              placeholder="Task..."
+              name="task"
+              value={ task }
+              onChange={ handleChange }
+            />
+            <input
+              type="number"
+              placeholder="Deadline (in Days)..."
+              name="deadline"
+              value={ dealine }
+              onChange={ handleChange }
+            />
+          </div>
+          <button
+            onClick={ addTask }
+          >
+            Add Task
+          </button>
       </div>
       <div className="todoList">
         {todoList
-          .map((task: ITask, key: number) => <TodoTask key={key} task={task} completeTask={completeTask} />)}
+          .map((task: ITask, key: number) => <TodoTask key={ key } task={ task } completeTask={ completeTask } />)}
       </div>
     </div>
   );
